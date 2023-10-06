@@ -10,7 +10,7 @@ you can immediately create and work with Jsolar objects, as you would expect fro
 #include <jsolar/jsolar.h>
 #include <iostream>
 
-using namespace wingmann::ser::json;
+using namespace wingmann::serializing::json;
 
 int main() {
     Jsolar obj;
@@ -39,7 +39,7 @@ int main() {
 #include <jsolar/jsolar.h>
 #include <iostream>
 
-using namespace wingmann::ser::json;
+using namespace wingmann::serializing::json;
 
 int main() {
     auto obj = Jsolar::load(R"({
