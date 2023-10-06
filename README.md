@@ -10,16 +10,16 @@ you can immediately create and work with Json objects, as you would expect from 
 #include <jsolar/jsolar.h>
 #include <iostream>
 
-using namespace wingmann::ser;
+using namespace wingmann::ser::json;
 
 int main() {
     jsolar obj;
 
     // Create a new array as a field of an object.
-    obj["array"] = json_make_array(true, "two", 3, 4.9213798);
+    obj["array"] = array(true, "two", 3, 4.9213798);
 
     // Create a new object as a field of another object.
-    obj["object"] = json_make_object();
+    obj["object"] = object();
     // Assign to one of the inner object's fields.
     obj["object"]["inner"] = "inside";
     
@@ -28,7 +28,7 @@ int main() {
     obj["another_array"].append(false, "three");
     
     // We can also parse a string into a Json object.
-    obj["parsed"] = json_load(R"([{"key": "value"}, false])");
+    obj["parsed"] = Json::load(R"([{"key": "value"}, false])");
     
     std::cout << obj << '\n';
     return 0;
@@ -36,13 +36,13 @@ int main() {
 ```
 
 ```cpp
-#include <alef/serializing/julianah.h>
+#include <jsolar/jsolar.h>
 #include <iostream>
 
-using namespace wingmann::ser;
+using namespace wingmann::ser::json;
 
 int main() {
-    auto obj = json_load(R"({
+    auto obj = Json::load(R"({
         "array": [true, "two", 3, 4.9213798],
         "another_array": [false, "three"],
         "new": {
