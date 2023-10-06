@@ -8,7 +8,7 @@
 
 namespace wingmann::ser::json {
 
-class Json;
+class Jsolar;
 
 union BackingData {
     BackingData(double d)      : number(d) {}
@@ -17,8 +17,8 @@ union BackingData {
     BackingData(std::string s) : string{new std::string{std::move(s)}} {}
     BackingData()              : number(0) {}
 
-    std::deque<Json>* list;
-    std::map<std::string, Json>* map;
+    std::deque<Jsolar>* list;
+    std::map<std::string, Jsolar>* map;
     std::string* string;
     double number;
     bool boolean;

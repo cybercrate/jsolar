@@ -1,9 +1,9 @@
 # Jsolar
 
 ### About
-Jsolar is a lightweight library for serializing/deserializing the Json format in C++.
+Jsolar is a lightweight library for serializing/deserializing the Jsolar format in C++.
 Taking advantage of templates and operator overloading on the backend,
-you can immediately create and work with Json objects, as you would expect from a language like JavaScript.
+you can immediately create and work with Jsolar objects, as you would expect from a language like JavaScript.
 
 ### Examples
 ```cpp
@@ -13,7 +13,7 @@ you can immediately create and work with Json objects, as you would expect from 
 using namespace wingmann::ser::json;
 
 int main() {
-    jsolar obj;
+    Jsolar obj;
 
     // Create a new array as a field of an object.
     obj["array"] = array(true, "two", 3, 4.9213798);
@@ -27,8 +27,8 @@ int main() {
     obj["new"]["some"]["deep"]["key"] = "value";
     obj["another_array"].append(false, "three");
     
-    // We can also parse a string into a Json object.
-    obj["parsed"] = Json::load(R"([{"key": "value"}, false])");
+    // We can also parse a string into a json object.
+    obj["parsed"] = Jsolar::load(R"([{"key": "value"}, false])");
     
     std::cout << obj << '\n';
     return 0;
@@ -42,7 +42,7 @@ int main() {
 using namespace wingmann::ser::json;
 
 int main() {
-    auto obj = Json::load(R"({
+    auto obj = Jsolar::load(R"({
         "array": [true, "two", 3, 4.9213798],
         "another_array": [false, "three"],
         "new": {

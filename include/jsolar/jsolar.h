@@ -19,14 +19,14 @@
 
 namespace wingmann::ser::json {
 
-class Json {
+class Jsolar {
     BackingData internal_;
     JsonClass type_ = JsonClass::Null;
 
 public:
-    Json() : internal_{}, type_{JsonClass::Null} {}
+    Jsolar() : internal_{}, type_{JsonClass::Null} {}
 
-    Json(std::initializer_list<Json> list) : Json{} {
+    Jsolar(std::initializer_list<Jsolar> list) : Jsolar{} {
         setType_(JsonClass::Object);
 
         for (auto i = list.begin(), e = list.end(); i != e; i += 2) {
@@ -34,12 +34,12 @@ public:
         }
     }
 
-    Json(Json&& other) noexcept : internal_{other.internal_}, type_{other.type_} {
+    Jsolar(Jsolar&& other) noexcept : internal_{other.internal_}, type_{other.type_} {
         other.type_ = JsonClass::Null;
         other.internal_.map = nullptr;
     }
 
-    Json& operator=(Json&& other) noexcept {
+    Jsolar& operator=(Jsolar&& other) noexcept {
         clearInternal_();
 
         internal_ = other.internal_;
@@ -51,15 +51,15 @@ public:
         return *this;
     }
 
-    Json(const Json& other) {
+    Jsolar(const Jsolar& other) {
         switch (other.type_) {
         case JsonClass::Object:
-            internal_.map = new std::map<std::string, Json>(
+            internal_.map = new std::map<std::string, Jsolar>(
                 other.internal_.map->begin(),
                 other.internal_.map->end());
             break;
         case JsonClass::Array:
-            internal_.list = new std::deque<Json>(
+            internal_.list = new std::deque<Jsolar>(
                 other.internal_.list->begin(),
                 other.internal_.list->end());
             break;
@@ -72,16 +72,16 @@ public:
         type_ = other.type_;
     }
 
-    Json& operator=(const Json& other) {
+    Jsolar& operator=(const Jsolar& other) {
         clearInternal_();
         switch (other.type_) {
         case JsonClass::Object:
-            internal_.map = new std::map<std::string, Json>(
+            internal_.map = new std::map<std::string, Jsolar>(
                 other.internal_.map->begin(),
                 other.internal_.map->end());
             break;
         case JsonClass::Array:
-            internal_.list = new std::deque<Json>(
+            internal_.list = new std::deque<Jsolar>(
                 other.internal_.list->begin(),
                 other.internal_.list->end());
             break;
@@ -95,7 +95,7 @@ public:
         return *this;
     }
 
-    ~Json() {
+    ~Jsolar() {
         switch (type_) {
         case JsonClass::Array:
             delete internal_.list;
@@ -111,33 +111,33 @@ public:
     }
 
     template<typename T>
-    explicit Json(T b, typename std::enable_if<std::is_same<T, bool>::value>::type* = 0)
+    explicit Jsolar(T b, typename std::enable_if<std::is_same<T, bool>::value>::type* = 0)
         : internal_(b), type_(JsonClass::Boolean) {}
 
     template<typename T>
-    explicit Json(
+    explicit Jsolar(
         T i,
         typename std::enable_if<
             std::is_integral<T>::value && !std::is_same<T, bool>::value>::type* = 0)
         : internal_{static_cast<long>(i)}, type_{JsonClass::Number} {}
 
     template<typename T>
-    explicit Json(T f, typename std::enable_if<std::is_floating_point<T>::value>::type* = 0)
+    explicit Jsolar(T f, typename std::enable_if<std::is_floating_point<T>::value>::type* = 0)
         : internal_{static_cast<double>(f)}, type_{JsonClass::Number} {}
 
     template<typename T>
-    explicit Json(T s, typename std::enable_if<std::is_convertible<T, std::string>::value>::type* = 0)
+    explicit Jsolar(T s, typename std::enable_if<std::is_convertible<T, std::string>::value>::type* = 0)
         : internal_{std::string{s}}, type_{JsonClass::String} {}
 
-    explicit Json(std::nullptr_t) : internal_{}, type_{JsonClass::Null} {}
+    explicit Jsolar(std::nullptr_t) : internal_{}, type_{JsonClass::Null} {}
 
-    static Json Make(JsonClass type) {
-        Json ret;
+    static Jsolar Make(JsonClass type) {
+        Jsolar ret;
         ret.setType_(type);
         return ret;
     }
 
-    static Json load(const std::string &str);
+    static Jsolar load(const std::string &str);
 
     template<typename T>
     void append(T arg) {
@@ -152,40 +152,40 @@ public:
     }
 
     template<typename T>
-    typename std::enable_if<std::is_same<T, bool>::value, Json&>::type operator=(T b) {
+    typename std::enable_if<std::is_same<T, bool>::value, Jsolar&>::type operator=(T b) {
         setType_(JsonClass::Boolean);
         internal_.boolean = b;
         return *this;
     }
 
     template<typename T>
-    typename std::enable_if<std::is_integral<T>::value && !std::is_same<T, bool>::value, Json&>::type operator=(T i) {
+    typename std::enable_if<std::is_integral<T>::value && !std::is_same<T, bool>::value, Jsolar&>::type operator=(T i) {
         setType_(JsonClass::Number);
         internal_.number = i;
         return *this;
     }
 
     template<typename T>
-    typename std::enable_if<std::is_floating_point<T>::value, Json&>::type operator=(T f) {
+    typename std::enable_if<std::is_floating_point<T>::value, Jsolar&>::type operator=(T f) {
         setType_(JsonClass::Number);
         internal_.number = f;
         return *this;
     }
 
     template<typename T>
-    typename std::enable_if<std::is_convertible<T, std::string>::value, Json&>::type
+    typename std::enable_if<std::is_convertible<T, std::string>::value, Jsolar&>::type
     operator=(T s) {
         setType_(JsonClass::String);
         *internal_.string = std::string(s);
         return *this;
     }
 
-    Json& operator[](const std::string& key) {
+    Jsolar& operator[](const std::string& key) {
         setType_(JsonClass::Object);
         return internal_.map->operator[](key);
     }
 
-    Json& operator[](unsigned index) {
+    Jsolar& operator[](unsigned index) {
         setType_(JsonClass::Array);
 
         if (index >= internal_.list->size()) {
@@ -194,21 +194,21 @@ public:
         return internal_.list->operator[](index);
     }
 
-    Json& at(const std::string& key) {
+    Jsolar& at(const std::string& key) {
         return operator[](key);
     }
 
     [[nodiscard]]
-    const Json& at(const std::string& key) const {
+    const Jsolar& at(const std::string& key) const {
         return internal_.map->at(key);
     }
 
-    Json& at(unsigned index) {
+    Jsolar& at(unsigned index) {
         return operator[](index);
     }
 
     [[nodiscard]]
-    const Json& at(unsigned index) const {
+    const Jsolar& at(unsigned index) const {
         return internal_.list->at(index);
     }
 
@@ -245,7 +245,7 @@ public:
         return type_;
     }
 
-    // Functions for getting primitives from the Json object.
+    // Functions for getting primitives from the Jsolar object.
     [[nodiscard]]
     bool IsNull() const {
         return type_ == JsonClass::Null;
@@ -294,14 +294,14 @@ public:
         return ok && internal_.boolean;
     }
 
-    JsonWrapper<std::map<std::string, Json>> objectRange() {
+    JsonWrapper<std::map<std::string, Jsolar>> objectRange() {
         if (type_ == JsonClass::Object) {
             return {internal_.map};
         }
         return {nullptr};
     }
 
-    JsonWrapper<std::deque<Json>> arrayRange() {
+    JsonWrapper<std::deque<Jsolar>> arrayRange() {
         if (type_ == JsonClass::Array) {
             return {internal_.list};
         }
@@ -309,7 +309,7 @@ public:
     }
 
     [[nodiscard]]
-    JsonConstWrapper<std::map<std::string, Json>> objectRange() const {
+    JsonConstWrapper<std::map<std::string, Jsolar>> objectRange() const {
         if (type_ == JsonClass::Object) {
             return {internal_.map};
         }
@@ -317,7 +317,7 @@ public:
     }
 
     [[nodiscard]]
-    JsonConstWrapper<std::deque<Json>> ArrayRange() const {
+    JsonConstWrapper<std::deque<Jsolar>> ArrayRange() const {
         if (type_ == JsonClass::Array) {
             return {internal_.list};
         }
@@ -366,7 +366,7 @@ public:
         }
     }
 
-    friend std::ostream& operator<<(std::ostream&, const Json&);
+    friend std::ostream& operator<<(std::ostream&, const Jsolar&);
 
 private:
     void setType_(JsonClass type) {
@@ -380,10 +380,10 @@ private:
             internal_.map = nullptr;
             break;
         case JsonClass::Object:
-            internal_.map = new std::map<std::string, Json>();
+            internal_.map = new std::map<std::string, Jsolar>();
             break;
         case JsonClass::Array:
-            internal_.list = new std::deque<Json>();
+            internal_.list = new std::deque<Jsolar>();
             break;
         case JsonClass::String:
             internal_.string = new std::string();
@@ -415,35 +415,35 @@ private:
     }
 };
 
-Json array() {
-    return std::move(Json::Make(JsonClass::Array));
+Jsolar array() {
+    return std::move(Jsolar::Make(JsonClass::Array));
 }
 
 template<typename... T>
-Json array(T... args) {
-    Json arr = Json::Make(JsonClass::Array);
+Jsolar array(T... args) {
+    Jsolar arr = Jsolar::Make(JsonClass::Array);
     arr.append(args...);
     return std::move(arr);
 }
 
-Json object() {
-    return std::move(Json::Make(JsonClass::Object));
+Jsolar object() {
+    return std::move(Jsolar::Make(JsonClass::Object));
 }
 
-std::ostream& operator<<(std::ostream& os, const Json& json) {
+std::ostream& operator<<(std::ostream& os, const Jsolar& json) {
     os << json.dump();
     return os;
 }
 
 namespace {
-Json parse_next(const std::string&, size_t&);
+Jsolar parse_next(const std::string&, size_t&);
 
 void consume_ws(const std::string& str, size_t& offset) {
     while (isspace(str[offset])) ++offset;
 }
 
-Json parse_object(const std::string& str, size_t& offset) {
-    Json Object = Json::Make(JsonClass::Object);
+Jsolar parse_object(const std::string& str, size_t& offset) {
+    Jsolar Object = Jsolar::Make(JsonClass::Object);
 
     ++offset;
     consume_ws(str, offset);
@@ -453,14 +453,14 @@ Json parse_object(const std::string& str, size_t& offset) {
     }
 
     while (true) {
-        Json Key = parse_next(str, offset);
+        Jsolar Key = parse_next(str, offset);
         consume_ws(str, offset);
         if (str[offset] != ':') {
             std::cerr << "error[object] expected colon, found '" << str[offset] << "'\n";
             break;
         }
         consume_ws(str, ++offset);
-        Json Value = parse_next(str, offset);
+        Jsolar Value = parse_next(str, offset);
         Object[Key.toString()] = Value;
 
         consume_ws(str, offset);
@@ -479,8 +479,8 @@ Json parse_object(const std::string& str, size_t& offset) {
     return std::move(Object);
 }
 
-Json parse_array(const std::string& str, size_t& offset) {
-    Json Array = Json::Make(JsonClass::Array);
+Jsolar parse_array(const std::string& str, size_t& offset) {
+    Jsolar Array = Jsolar::Make(JsonClass::Array);
     unsigned index = 0;
 
     ++offset;
@@ -502,15 +502,15 @@ Json parse_array(const std::string& str, size_t& offset) {
             break;
         } else {
             std::cerr << "error[array] expected ',' or ']', found '" << str[offset] << "'\n";
-            return std::move(Json::Make(JsonClass::Array));
+            return std::move(Jsolar::Make(JsonClass::Array));
         }
     }
 
     return std::move(Array);
 }
 
-Json parse_string(const std::string& str, size_t& offset) {
-    Json String;
+Jsolar parse_string(const std::string& str, size_t& offset) {
+    Jsolar String;
     std::string val;
     for (char c = str[++offset]; c != '\"'; c = str[++offset]) {
         if (c == '\\') {
@@ -549,7 +549,7 @@ Json parse_string(const std::string& str, size_t& offset) {
                         std::cerr
                             << "error[string] expected hex character in unicode escape, found '"
                             << c << "'\n";
-                        return std::move(Json::Make(JsonClass::String));
+                        return std::move(Jsolar::Make(JsonClass::String));
                     }
                 }
                 offset += 4;
@@ -566,8 +566,8 @@ Json parse_string(const std::string& str, size_t& offset) {
     return std::move(String);
 }
 
-Json parse_number(const std::string& str, size_t& offset) {
-    Json Number;
+Jsolar parse_number(const std::string& str, size_t& offset) {
+    Jsolar Number;
     std::string val, exp_str;
     char c;
     bool isDouble = false;
@@ -594,14 +594,14 @@ Json parse_number(const std::string& str, size_t& offset) {
                 exp_str += c;
             else if (!isspace(c) && c != ',' && c != ']' && c != '}') {
                 std::cerr << "error[number] expected a number for exponent, found '" << c << "'\n";
-                return std::move(Json::Make(JsonClass::Null));
+                return std::move(Jsolar::Make(JsonClass::Null));
             } else
                 break;
         }
         exp = std::stol(exp_str);
     } else if (!isspace(c) && c != ',' && c != ']' && c != '}') {
         std::cerr << "error[number] unexpected character '" << c << "'\n";
-        return std::move(Json::Make(JsonClass::Null));
+        return std::move(Jsolar::Make(JsonClass::Null));
     }
     --offset;
 
@@ -616,8 +616,8 @@ Json parse_number(const std::string& str, size_t& offset) {
     return std::move(Number);
 }
 
-Json parse_bool(const std::string& str, size_t& offset) {
-    Json Bool;
+Jsolar parse_bool(const std::string& str, size_t& offset) {
+    Jsolar Bool;
     if (str.substr(offset, 4) == "true")
         Bool = true;
     else if (str.substr(offset, 5) == "false")
@@ -625,23 +625,23 @@ Json parse_bool(const std::string& str, size_t& offset) {
     else {
         std::cerr << "error[boolean] expected 'true' or 'false', found '" << str.substr(offset, 5)
                   << "'\n";
-        return std::move(Json::Make(JsonClass::Null));
+        return std::move(Jsolar::Make(JsonClass::Null));
     }
     offset += (Bool.toBool() ? 4 : 5);
     return std::move(Bool);
 }
 
-Json parse_null(const std::string& str, size_t& offset) {
-    Json Null;
+Jsolar parse_null(const std::string& str, size_t& offset) {
+    Jsolar Null;
     if (str.substr(offset, 4) != "null") {
         std::cerr << "error[null]: expected 'null', found '" << str.substr(offset, 4) << "'\n";
-        return std::move(Json::Make(JsonClass::Null));
+        return std::move(Jsolar::Make(JsonClass::Null));
     }
     offset += 4;
     return std::move(Null);
 }
 
-Json parse_next(const std::string& str, size_t& offset) {
+Jsolar parse_next(const std::string& str, size_t& offset) {
     char value;
     consume_ws(str, offset);
     value = str[offset];
@@ -667,7 +667,7 @@ Json parse_next(const std::string& str, size_t& offset) {
 }
 } // namespace
 
-Json Json::load(const std::string& str) {
+Jsolar Jsolar::load(const std::string& str) {
     size_t offset = 0;
     return std::move(parse_next(str, offset));
 }

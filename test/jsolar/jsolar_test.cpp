@@ -4,13 +4,13 @@
 #include <fstream>
 
 TEST(wingmann_serializing_jsolar, create_new) {
-    wingmann::ser::json::Json obj;
+    wingmann::ser::json::Jsolar obj;
     obj["array"] = wingmann::ser::json::array(true, "two", 3, 4.9213798);
     obj["object"] = wingmann::ser::json::object();
     obj["object"]["inner"] = "inside";
     obj["new"]["some"]["deep"]["key"] = "value";
     obj["another_array"].append(false, "three");
-    obj["parsed"] = wingmann::ser::json::Json::load(R"([{"key": "value"}, false])");
+    obj["parsed"] = wingmann::ser::json::Jsolar::load(R"([{"key": "value"}, false])");
 
     std::ofstream file{"test_data_1.json"};
     if (file.is_open()) {
@@ -21,7 +21,7 @@ TEST(wingmann_serializing_jsolar, create_new) {
 }
 
 TEST(wingmann_serializing_jsolar, init_from_string) {
-    auto obj = wingmann::ser::json::Json::load(R"({
+    auto obj = wingmann::ser::json::Jsolar::load(R"({
         "array": [true, "two", 3, 4.921380],
         "another_array": [false, "three"],
         "new": {
@@ -62,6 +62,6 @@ TEST(wingmann_serializing_jsolar, load_from_file) {
         file.close();
     }
     EXPECT_EQ(
-            wingmann::ser::json::Json::load(f1).dump(),
-        wingmann::ser::json::Json::load(f2).dump());
+            wingmann::ser::json::Jsolar::load(f1).dump(),
+        wingmann::ser::json::Jsolar::load(f2).dump());
 }
