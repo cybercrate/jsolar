@@ -1,7 +1,7 @@
 #ifndef WINGMANN_JSOLAR_WRAPPER_H
 #define WINGMANN_JSOLAR_WRAPPER_H
 
-namespace wingmann::ser::json {
+namespace wingmann::serializing::json {
 
 template<typename Container>
 class JsonWrapper {
@@ -45,6 +45,6 @@ public:
     }
 };
 
-} // namespace wingmann::ser::json
+} // namespace wingmann::serializing::json
 
 #endif // WINGMANN_JSOLAR_WRAPPER_H

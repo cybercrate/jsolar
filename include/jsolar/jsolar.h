@@ -17,7 +17,7 @@
 #include <string>
 #include <type_traits>
 
-namespace wingmann::ser::json {
+namespace wingmann::serializing::json {
 
 class Jsolar {
     BackingData internal_;
@@ -672,6 +672,6 @@ Jsolar Jsolar::load(const std::string& str) {
     return std::move(parse_next(str, offset));
 }
 
-} // namespace wingmann::ser::json
+} // namespace wingmann::serializing::json
 
 #endif // WINGMANN_JSOLAR_JSOLAR_H

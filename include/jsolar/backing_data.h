@@ -6,7 +6,7 @@
 #include <map>
 #include <utility>
 
-namespace wingmann::ser::json {
+namespace wingmann::serializing::json {
 
 class Jsolar;
 
@@ -24,6 +24,6 @@ union BackingData {
     bool boolean;
 };
 
-} // namespace wingmann::ser::json
+} // namespace wingmann::serializing::json
 
 #endif // JSOLAR_JSOLAR_BACKING_DATA_H

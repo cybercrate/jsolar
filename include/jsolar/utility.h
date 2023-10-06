@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace wingmann::ser::json {
+namespace wingmann::serializing::json {
 
 std::string json_escape(const std::string &str) {
     std::string output;
@@ -39,6 +39,6 @@ std::string json_escape(const std::string &str) {
     return std::move(output);
 }
 
-} // namespace wingmann::ser::json
+} // namespace wingmann::serializing::json
 
 #endif // WINGMANN_JSOLAR_UTILITY_H

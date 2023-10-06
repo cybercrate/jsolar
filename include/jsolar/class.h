@@ -1,7 +1,7 @@
 #ifndef WINGMANN_JSOLAR_CLASS_H
 #define WINGMANN_JSOLAR_CLASS_H
 
-namespace wingmann::ser::json {
+namespace wingmann::serializing::json {
 
 enum class JsonClass {
     Null,
@@ -12,6 +12,6 @@ enum class JsonClass {
     Boolean
 };
 
-} // namespace wingmann::ser::json
+} // namespace wingmann::serializing::json
 
 #endif // WINGMANN_JSOLAR_CLASS_H
